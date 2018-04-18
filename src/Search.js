@@ -17,7 +17,7 @@ class Search extends Component {
   }
 
   search = event => {
-    const query = event.target.value.trim();
+    const query = event.target.value;
     this.setState({ query: query });
 
     // if user input => run the search
