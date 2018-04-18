@@ -1,17 +1,35 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ShelfChanger from "./ShelfChanger";
 import noCover from "./icons/no-cover-image.png";
+import ShelfChanger from "./ShelfChanger";
 
 class Book extends Component {
   static propTypes = {
-    book: PropTypes.object.isRequired,
     books: PropTypes.array.isRequired,
-    changeShelf: PropTypes.func.isRequired
+    onUpdate: PropTypes.func.isRequired
+  };
+
+  state = {
+    book: {}
+  };
+  componentWillMount() {
+    this.syncState();
+  }
+
+  syncState = () => {
+    for (let i = 0; i < this.props.books.length; i++) {
+      if (this.props.books[i].id === this.props.book.id) {
+        this.setState({ book: this.props.books[i] });
+      }
+    }
   };
 
   render() {
-    const { book, books, changeShelf } = this.props;
+    if (this.state.book.shelf) {
+      console.log(`State: ${this.state.book.shelf}`);
+    }
+
+    const { book, books, onUpdate } = this.props;
 
     // add fallbacks for missing cover images and title
     const coverImg =
@@ -26,9 +44,18 @@ class Book extends Component {
           <div className="book-top">
             <div
               className="book-cover"
-              style={{ backgroundImage: `url(${coverImg})` }}
+              style={{
+                width: 128,
+                height: 193,
+                backgroundImage: `url(${coverImg})`
+              }}
             />
-            <ShelfChanger book={book} books={books} changeShelf={changeShelf} />
+            <ShelfChanger
+              shelf={this.state.book.shelf}
+              book={book}
+              books={books}
+              onUpdate={onUpdate}
+            />
           </div>
           <div className="book-title">{title}</div>
           {/* Check for authors and render each on separate line if exist*/

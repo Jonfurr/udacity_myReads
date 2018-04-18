@@ -11,27 +11,23 @@ class BooksApp extends React.Component {
   };
 
   componentWillMount() {
-    BooksAPI.getAll()
-      .then(data => {
-        this.setState({ books: data });
-      })
+    BooksAPI.getAll().then(data => {
+      this.setState({ books: data });
+    });
   }
 
-
-
   updateShelf = (book, shelf) => {
-    BooksAPI.update(book, shelf)
-    .then(() => {
+    BooksAPI.update(book, shelf).then(() => {
       BooksAPI.getAll().then(data => {
         this.setState({ books: data });
       });
-    })
-  }
-
+    });
+  };
 
   render() {
     if (this.state.books.length < 1) {
-      return <div className="spinner">
+      return (
+        <div className="spinner">
           <ul>
             <li />
             <li />
@@ -39,13 +35,27 @@ class BooksApp extends React.Component {
             <li />
             <li />
           </ul>
-        </div>;
+        </div>
+      );
     }
     if (this.state.books.length >= 1) {
-      return <div className="app">
-          <Route exact path="/" render={() => <ListBooks books={this.state.books} onUpdate={this.updateShelf} />} />
-          <Route path="/search" render={() => <Search books={this.state.books} onUpdate={this.updateShelf} />} />
-        </div>;
+      return (
+        <div className="app">
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <ListBooks books={this.state.books} onUpdate={this.updateShelf} />
+            )}
+          />
+          <Route
+            path="/search"
+            render={() => (
+              <Search books={this.state.books} onUpdate={this.updateShelf} />
+            )}
+          />
+        </div>
+      );
     }
   }
 }
