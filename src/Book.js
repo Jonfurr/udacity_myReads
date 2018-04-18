@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import noCover from "./icons/no-cover-image.png";
+import genericCover from "./icons/no-cover-image.jpg";
 import ShelfChanger from "./ShelfChanger";
 
 class Book extends Component {
@@ -25,18 +25,13 @@ class Book extends Component {
   };
 
   render() {
-    if (this.state.book.shelf) {
-      console.log(`State: ${this.state.book.shelf}`);
-    }
 
     const { book, books, onUpdate } = this.props;
-
-    // add fallbacks for missing cover images and title
-    const coverImg =
+    const bookCover =
       book.imageLinks && book.imageLinks.thumbnail
         ? book.imageLinks.thumbnail
-        : noCover;
-    const title = book.title ? book.title : "No title available";
+        : genericCover;
+    const title = book.title ? book.title : "Book title unavailable";
 
     return (
       <li>
@@ -47,7 +42,8 @@ class Book extends Component {
               style={{
                 width: 128,
                 height: 193,
-                backgroundImage: `url(${coverImg})`
+                backgroundImage: `url(${bookCover})`,
+                backgroundSize: 'contain'
               }}
             />
             <ShelfChanger
@@ -58,13 +54,15 @@ class Book extends Component {
             />
           </div>
           <div className="book-title">{title}</div>
-          {/* Check for authors and render each on separate line if exist*/
+          {
           book.authors &&
             book.authors.map((author, index) => (
               <div className="book-authors" key={index}>
                 {author}
               </div>
             ))}
+            {!book.authors &&
+            <div className="book-authors">Author Unavailable</div>}
         </div>
       </li>
     );
