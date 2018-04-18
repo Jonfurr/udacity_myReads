@@ -13,7 +13,7 @@ To run locally:
 * cd into the udacity_myReads directory
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
-* view the app at (localhost:3000)
+* view the app at (https://localhost:3000)
 
 ## What You're Getting
 ```bash
